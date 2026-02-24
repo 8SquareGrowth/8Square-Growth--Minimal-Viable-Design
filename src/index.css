@@ -1,0 +1,51 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "DM Sans", ui-sans-serif, system-ui, sans-serif;
+  
+  --color-vampire-black: #070707;
+  --color-raisin-black: #211A24;
+  --color-electric-lime: #57ff1e;
+  --color-growth-green: #01ff66;
+  --color-anti-flash-white: #F1F1F1;
+  --color-spanish-gray: #9E9E9E;
+  --color-granite-gray: #635766;
+
+  --spacing-8: 2rem; /* 32px */
+  --spacing-16: 4rem; /* 64px */
+  --spacing-32: 8rem; /* 128px */
+}
+
+@layer base {
+  body {
+    @apply bg-vampire-black text-anti-flash-white font-sans antialiased;
+  }
+}
+
+@layer utilities {
+  .horizon-glow {
+    background: radial-gradient(circle at 50% 100%, rgba(87, 255, 30, 0.15) 0%, rgba(7, 7, 7, 0) 70%);
+  }
+  
+  .glass-card {
+    @apply bg-white/5 backdrop-blur-md border border-white/10;
+  }
+
+  .neon-glow {
+    box-shadow: 0 0 20px rgba(87, 255, 30, 0.4);
+  }
+
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-b from-anti-flash-white to-spanish-gray;
+  }
+}
+
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  animation: marquee 30s linear infinite;
+}
