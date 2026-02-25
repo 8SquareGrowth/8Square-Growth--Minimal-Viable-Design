@@ -1,8 +1,4 @@
-/**
- * @license
- * SPDX-License-Identifier: Apache-2.0
- */
-
+import React, { useState, useRef } from "react";
 import { motion, useScroll, useTransform } from "motion/react";
 import {
   ArrowRight,
@@ -13,354 +9,247 @@ import {
   Users,
   MessageSquare,
   Cpu,
-  Mail,
-  Phone,
-  MapPin,
-  Linkedin,
-  Twitter,
-  Instagram,
-  ChevronRight
+  ChevronRight,
+  Plus,
+  Minus,
+  Check
 } from "lucide-react";
-import React, { useState, useRef } from "react";
 
-const services = [
-  "Chatbot Development",
-  "Tools integrations",
-  "Automated Workflows",
-  "AI Strategy"
-];
+// --- Data Constants ---
 
-const process = [
+const SERVICES = [
   {
-    id: "step-1",
-    number: "01",
-    title: "Subscribe",
-    description: "Choose your plan and launch in minutes—upgrade, pause, or cancel anytime.",
-    icon: <Cpu className="w-8 h-8 text-electric-lime" />
+    title: "Chatbot Development",
+    desc: "Custom AI support systems for instant resolution.",
+    icon: <MessageSquare className="w-6 h-6 text-electric-lime" />
   },
   {
-    id: "step-2",
-    number: "02",
-    title: "Analyze",
-    description: "We begin by auditing your workflows to pinpoint where AI can streamline and elevate your processes.",
-    icon: <BarChart3 className="w-8 h-8 text-electric-lime" />
+    title: "Tools Integrations",
+    desc: "Seamlessly connecting AI to your CRM and workflow stack.",
+    icon: <Zap className="w-6 h-6 text-electric-lime" />
   },
   {
-    id: "step-3",
-    number: "03",
-    title: "Build & Implement",
-    description: "Next, our engineers craft bespoke AI solutions for your company—relentlessly prioritizing quality and safety.",
-    icon: <Zap className="w-8 h-8 text-electric-lime" />
+    title: "Automated Workflows",
+    desc: "Ending manual labor with clinical automation logic.",
+    icon: <Cpu className="w-6 h-6 text-electric-lime" />
   },
   {
-    id: "step-4",
-    number: "04",
-    title: "Test & Optimise",
-    description: "You approve or request revisions—we iterate fast, polishing each build until you’re fully satisfied.",
-    icon: <CheckCircle2 className="w-8 h-8 text-electric-lime" />
+    title: "AI Strategy",
+    desc: "Expert roadmapping for long-term scalable growth.",
+    icon: <BarChart3 className="w-6 h-6 text-electric-lime" />
   }
 ];
 
-const testimonials = [
+const PROCESS = [
+  { id: "01", title: "Subscribe", desc: "Choose your plan and launch in minutes." },
+  { id: "02", title: "Analyze", desc: "We audit your workflows to find AI leverage." },
+  { id: "03", title: "Build", desc: "Our engineers craft bespoke, secure solutions." },
+  { id: "04", title: "Optimise", desc: "Iterative testing until peak performance." }
+];
+
+const METRICS = [
+  { val: "500+", label: "Deployments", icon: <CheckCircle2 className="w-8 h-8 opacity-20" /> },
+  { val: "50k+", label: "Hours Saved", icon: <Zap className="w-8 h-8 opacity-20" /> },
+  { val: "85%", label: "Faster Logic", icon: <Cpu className="w-8 h-8 opacity-20" /> },
+  { val: "$2M+", label: "ROI Delivered", icon: <BarChart3 className="w-8 h-8 opacity-20" /> }
+];
+
+const REVIEWS = [
   {
-    id: "test-1",
-    name: "Amy Louise",
-    role: "Customer Success Manager",
-    content: "Thanks to their team, our internal processes were optimized, resulting in significant better results for my work.",
-    image: "https://picsum.photos/seed/amy/100/100"
+    name: "Amy Louise", role: "Customer Success",
+    text: "Our internal processes were optimized beyond expectations. Clean, fast, and impactful.",
+    img: "https://i.pravatar.cc/150?u=amy"
   },
   {
-    id: "test-2",
-    name: "Benjamin Daul",
-    role: "Head of Engineering",
-    content: "Thanks to their team, our internal processes were optimized, resulting in significant savings and better results.",
-    image: "https://picsum.photos/seed/ben/100/100"
+    name: "Benjamin Daul", role: "Head of Engineering",
+    text: "The precision of their integration logic is unmatched. Significant savings across the board.",
+    img: "https://i.pravatar.cc/150?u=ben"
   },
   {
-    id: "test-3",
-    name: "Jesse Leigh",
-    role: "CEO & Founder",
-    content: "The best investment solution for our business! AI technologies not only save time, but also increase efficiency.",
-    image: "https://picsum.photos/seed/jesse/100/100"
+    name: "Jesse Leigh", role: "CEO & Founder",
+    text: "The best investment for our business scaling. Their AI doesn't just work; it excels.",
+    img: "https://i.pravatar.cc/150?u=jesse"
   },
   {
-    id: "test-4",
-    name: "Mateo Alvarez",
-    role: "Head of Growth",
-    content: "From brief to live AI agent in days. The site is fast, clear, and our inbound quality noticeably improved.",
-    image: "https://picsum.photos/seed/mateo/100/100"
+    name: "Mateo Alvarez", role: "Head of Growth",
+    text: "From brief to live AI agent in days. Inbound lead quality improved noticeably.",
+    img: "https://i.pravatar.cc/150?u=mateo"
   }
 ];
 
-export default function App() {
-  const [formState, setFormState] = useState({ name: "", email: "", message: "" });
-  const containerRef = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end end"]
-  });
+const PRICING = [
+  {
+    name: "Starter", price: "499",
+    feats: ["One pilot", "Workflow audit", "2 Integrations", "Email support"]
+  },
+  {
+    name: "Pro", price: "799", popular: true,
+    feats: ["Two pilots", "Slack support", "5 Integrations", "RAG Setup", "Monitoring"]
+  },
+  {
+    name: "Enterprise", price: "999",
+    feats: ["Unlimited builds", "PM support", "Global security", "Custom SOPs", "SLA Guarantee"]
+  }
+];
 
-  const handleFormSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    alert("Thank you for reaching out. Our architects will contact you shortly.");
-    setFormState({ name: "", email: "", message: "" });
-  };
+const FAQS = [
+  { q: "What does membership include?", a: "Full access to our AI architecture, deployment, and 24/7 system monitoring." },
+  { q: "How fast is implementation?", a: "We typically move from audit to first deployment within 7–14 business days." },
+  { q: "Can I cancel anytime?", a: "Yes, our monthly plans are flexible. Pause or cancel whenever your parameters change." }
+];
 
+// --- Components ---
+
+function Nav() {
   return (
-    <div ref={containerRef} className="relative min-h-screen selection:bg-electric-lime selection:text-vampire-black">
-      {/* Navigation */}
-      <nav id="nav" className="fixed top-0 left-0 w-full z-50 px-8 py-6 flex justify-between items-center backdrop-blur-sm border-b border-white/5">
-        <div id="logo" className="flex items-center gap-2">
-          <div className="w-8 h-8 bg-electric-lime rounded-sm flex items-center justify-center">
-            <div className="w-4 h-4 border-2 border-vampire-black"></div>
+    <nav className="fixed top-0 left-0 w-full z-50 border-b border-white/5 backdrop-blur-xl bg-black/50">
+      <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 bg-electric-lime flex items-center justify-center rounded-sm">
+            <div className="w-5 h-5 border-2 border-black"></div>
           </div>
-          <span className="text-xl font-bold tracking-tighter uppercase">8 Square</span>
+          <span className="font-black text-xl tracking-tighter uppercase">8Square</span>
         </div>
-        <div id="nav-links" className="hidden md:flex items-center gap-8 text-sm font-medium text-spanish-gray">
-          <a href="#ai-solutions" className="hover:text-electric-lime transition-colors">Services</a>
+        <div className="hidden md:flex items-center gap-10 text-xs font-bold uppercase tracking-widest text-zinc-400">
+          <a href="#services" className="hover:text-electric-lime transition-colors">Services</a>
           <a href="#process" className="hover:text-electric-lime transition-colors">Process</a>
           <a href="#pricing" className="hover:text-electric-lime transition-colors">Pricing</a>
-          <a href="#proof" className="hover:text-electric-lime transition-colors">Reviews</a>
-          <a href="#faq" className="hover:text-electric-lime transition-colors">FAQ</a>
+          <a href="#reviews" className="hover:text-electric-lime transition-colors">Reviews</a>
         </div>
-        <button id="nav-cta" className="px-6 py-2 bg-white/5 border border-white/10 rounded-sm text-sm font-medium hover:bg-white/10 transition-all">
+        <button className="px-5 py-2.5 bg-white/5 border border-white/10 rounded-sm text-xs font-bold uppercase tracking-widest hover:bg-white/10 transition-all">
           Connect
         </button>
-      </nav>
+      </div>
+    </nav>
+  );
+}
 
-      {/* Hero Section */}
-      <section id="hero" className="relative pt-40 pb-32 overflow-hidden horizon-glow">
-        <div className="max-w-7xl mx-auto px-8 relative z-10 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-          >
-            <span className="inline-block px-4 py-1 rounded-full border border-electric-lime/30 bg-electric-lime/5 text-electric-lime text-xs font-bold tracking-widest uppercase mb-8">
-              Available for Work
-            </span>
-            <h1 className="text-[60px] md:text-[110px] font-thin leading-[0.9] tracking-[-0.04em] mb-8 text-gradient">
-              Structured AI Solutions <br /> For Scalable Growth
-            </h1>
-            <p className="max-w-2xl mx-auto text-granite-gray text-lg md:text-xl mb-12 leading-relaxed">
-              Supercharge your workflow with AI automation.
-            </p>
-            <div className="flex flex-col md:flex-row items-center justify-center gap-6">
-              <button id="hero-cta-primary" className="group relative px-10 py-4 bg-electric-lime text-vampire-black font-bold rounded-sm overflow-hidden transition-all hover:scale-105 neon-glow">
-                <span className="relative z-10 flex items-center gap-2">
-                  Start Your Build <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                </span>
-              </button>
-              <button id="hero-cta-secondary" className="px-10 py-4 bg-white/5 border border-white/10 text-anti-flash-white font-bold rounded-sm hover:bg-white/10 transition-all">
-                View Systems
-              </button>
-            </div>
-          </motion.div>
-        </div>
-
-        {/* Service Marquee */}
-        <div id="services" className="mt-32 relative">
-          <div className="absolute inset-0 bg-gradient-to-r from-vampire-black via-transparent to-vampire-black z-10 pointer-events-none"></div>
-          <div className="flex overflow-hidden whitespace-nowrap py-8 border-y border-white/5 bg-raisin-black/30">
-            <div className="flex animate-marquee">
-              {[...services, ...services].map((service, i) => (
-                <div key={i} className="flex items-center gap-4 px-12">
-                  <div className="w-2 h-2 bg-electric-lime rounded-full"></div>
-                  <span className="text-2xl font-light tracking-tight text-spanish-gray uppercase">{service}</span>
-                </div>
-              ))}
-            </div>
+function Hero() {
+  return (
+    <section className="relative pt-48 pb-32 overflow-hidden">
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[600px] bg-electric-lime/10 blur-[120px] rounded-full opacity-50"></div>
+      <div className="max-w-5xl mx-auto px-6 relative z-10 text-center">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+        >
+          <span className="inline-block px-4 py-1.5 rounded-full border border-electric-lime/20 bg-electric-lime/5 text-electric-lime text-[10px] font-black tracking-[0.2em] uppercase mb-10">
+            Available for Work
+          </span>
+          <h1 className="text-6xl md:text-[90px] font-light leading-[1] tracking-tight mb-8 text-gradient">
+            Structured AI Solutions <br />
+            <span className="text-zinc-600">For Scalable Growth</span>
+          </h1>
+          <p className="max-w-2xl mx-auto text-zinc-400 text-lg md:text-xl mb-12 font-light leading-relaxed">
+            Supercharge your workflow with clinical-grade AI automation. We architect growth systems for the digital-first era.
+          </p>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
+            <button className="w-full sm:w-auto px-10 py-5 bg-electric-lime text-black font-black uppercase tracking-widest text-xs hover:scale-105 transition-transform">
+              Start Your Build
+            </button>
+            <button className="w-full sm:w-auto px-10 py-5 bg-white/5 border border-white/10 text-white font-black uppercase tracking-widest text-xs hover:bg-white/10 transition-all">
+              View Systems
+            </button>
           </div>
-        </div>
-      </section>
+        </motion.div>
+      </div>
+    </section>
+  );
+}
 
-      {/* Value Propositions */}
-      {/* How We Work Section */}
-      <section id="process" className="py-32 bg-vampire-black">
-        <div className="max-w-7xl mx-auto px-8">
-          <div className="text-center mb-24">
-            <h2 className="text-5xl font-light mb-4">How We Work</h2>
-            <p className="text-spanish-gray">A structured approach to clinical-grade internal automation.</p>
+export default function App() {
+  const [openFaq, setOpenFaq] = useState<number | null>(null);
+
+  return (
+    <div className="bg-black text-white selection:bg-electric-lime selection:text-black min-h-screen font-sans">
+      <Nav />
+      <Hero />
+
+      {/* Services Grid */}
+      <section id="services" className="py-32 border-t border-white/5">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="mb-20">
+            <span className="text-electric-lime text-xs font-black uppercase tracking-widest">// AI Solutions</span>
+            <h2 className="text-4xl md:text-5xl font-light mt-4 text-gradient">Automate with Precision.</h2>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            {process.map((step, i) => (
-              <motion.div
-                key={step.id}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.2 }}
-                viewport={{ once: true }}
-                className="relative group"
-              >
-                <div className="text-6xl font-black text-white/5 absolute -top-8 -left-2 select-none">
-                  {step.number}
-                </div>
-                <div className="relative z-10">
-                  <div className="mb-6 p-4 bg-raisin-black w-fit rounded-sm border border-white/5 group-hover:border-electric-lime/50 transition-colors">
-                    {step.icon}
-                  </div>
-                  <h3 className="text-2xl font-light mb-4 text-anti-flash-white">{step.title}</h3>
-                  <p className="text-sm text-granite-gray leading-relaxed">
-                    {step.description}
-                  </p>
-                </div>
-              </motion.div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {SERVICES.map((s, i) => (
+              <div key={i} className="p-8 border border-white/5 bg-zinc-900/30 rounded-sm hover:border-electric-lime/30 transition-all group">
+                <div className="mb-6">{s.icon}</div>
+                <h3 className="text-xl font-medium mb-3 group-hover:text-electric-lime transition-colors">{s.title}</h3>
+                <p className="text-zinc-500 text-sm leading-relaxed">{s.desc}</p>
+              </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* AI Solutions Section */}
-      <section id="ai-solutions" className="py-32 bg-raisin-black relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-1/2 h-full bg-electric-lime/5 blur-[120px] rounded-full -translate-y-1/2 translate-x-1/2"></div>
-        <div className="max-w-7xl mx-auto px-8 relative z-10">
-          <div className="flex flex-col md:flex-row gap-16 items-start">
-            <div className="md:w-1/2">
-              <span className="text-electric-lime font-mono text-sm mb-4 block tracking-widest uppercase">// AI Solutions</span>
-              <h2 className="text-[50px] md:text-[70px] font-light leading-tight mb-8">
-                From automation to <span className="text-electric-lime">advanced analytics</span>, we bring your vision to life.
-              </h2>
-              <div className="space-y-6">
-                {[
-                  { title: "Chatbot Development", desc: "We build custom AI chat for instant support and streamlined operations." },
-                  { title: "Tools integrations", desc: "We plug AI into your software, CRM systems, and marketing touchpoints." },
-                  { title: "Automated Workflows", desc: "Automate workflows to streamline tasks, boost efficiency, and save time." },
-                  { title: "AI Strategy", desc: "Get expert guidance to implement AI that fuels business growth." }
-                ].map((item, idx) => (
-                  <div key={idx} className="flex gap-4 items-start">
-                    <div className="mt-1 p-1 bg-electric-lime/10 rounded-full">
-                      <CheckCircle2 className="w-5 h-5 text-electric-lime" />
-                    </div>
-                    <div>
-                      <h4 className="text-xl font-medium mb-1">{item.title}</h4>
-                      <p className="text-spanish-gray">{item.desc}</p>
-                    </div>
-                  </div>
-                ))}
+      {/* Metrics Section */}
+      <section className="py-24 bg-zinc-900/50 border-y border-white/5">
+        <div className="max-w-7xl mx-auto px-6 grid grid-cols-2 lg:grid-cols-4 gap-12">
+          {METRICS.map((m, i) => (
+            <div key={i} className="text-center relative">
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">{m.icon}</div>
+              <div className="relative">
+                <div className="text-4xl md:text-5xl font-bold mb-2 text-white">{m.val}</div>
+                <div className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500">{m.label}</div>
               </div>
             </div>
-            <div className="md:w-1/2 grid grid-cols-2 gap-4">
-              <div className="aspect-square bg-vampire-black border border-white/5 p-8 flex flex-col justify-between hover:border-electric-lime/30 transition-all">
-                <BarChart3 className="w-10 h-10 text-spanish-gray" />
-                <div>
-                  <h5 className="text-2xl font-bold mb-1">500+</h5>
-                  <p className="text-xs text-granite-gray uppercase tracking-widest">Successful Deployments</p>
-                </div>
-              </div>
-              <div className="aspect-square bg-vampire-black border border-white/5 p-8 flex flex-col justify-between hover:border-electric-lime/30 transition-all">
-                <Zap className="w-10 h-10 text-spanish-gray" />
-                <div>
-                  <h5 className="text-2xl font-bold mb-1">50k+</h5>
-                  <p className="text-xs text-granite-gray uppercase tracking-widest">Hours Automated</p>
-                </div>
-              </div>
-              <div className="aspect-square bg-vampire-black border border-white/5 p-8 flex flex-col justify-between hover:border-electric-lime/30 transition-all">
-                <Cpu className="w-10 h-10 text-spanish-gray" />
-                <div>
-                  <h5 className="text-2xl font-bold mb-1">85%</h5>
-                  <p className="text-xs text-granite-gray uppercase tracking-widest">Reduction in Time</p>
-                </div>
-              </div>
-              <div className="aspect-square bg-vampire-black border border-white/5 p-8 flex flex-col justify-between hover:border-electric-lime/30 transition-all">
-                <ShieldCheck className="w-10 h-10 text-spanish-gray" />
-                <div>
-                  <h5 className="text-2xl font-bold mb-1">$2M+</h5>
-                  <p className="text-xs text-granite-gray uppercase tracking-widest">Cost Savings</p>
-                </div>
-              </div>
-            </div>
-          </div>
+          ))}
         </div>
       </section>
 
-      {/* Client Reviews */}
-      <section id="proof" className="py-32 bg-vampire-black">
-        <div className="max-w-7xl mx-auto px-8">
+      {/* Process Section */}
+      <section id="process" className="py-32 overflow-hidden">
+        <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-24">
-            <h2 className="text-5xl font-light mb-4">Client Reviews</h2>
-            <p className="text-spanish-gray">Trusted by industry leaders to deliver clinical-grade automation.</p>
+            <h2 className="text-5xl font-light">How We Move</h2>
+            <div className="w-24 h-1 bg-electric-lime mx-auto mt-6"></div>
           </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {testimonials.map((test, i) => (
-              <motion.div
-                key={test.id}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.1 }}
-                viewport={{ once: true }}
-                className="p-8 glass-card rounded-sm border-l-4 border-l-electric-lime h-full flex flex-col justify-between"
-              >
-                <p className="text-xl italic mb-8 text-anti-flash-white">"{test.content}"</p>
-                <div className="flex items-center gap-4">
-                  <img src={test.image} alt={test.name} className="w-12 h-12 rounded-full grayscale" referrerPolicy="no-referrer" />
-                  <div>
-                    <h5 className="font-bold text-anti-flash-white">{test.name}</h5>
-                    <p className="text-sm text-granite-gray">{test.role}</p>
-                  </div>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
+            {PROCESS.map((p, i) => (
+              <div key={i} className="relative">
+                <div className="text-7xl font-black text-white/5 absolute -top-8 -left-4">{p.id}</div>
+                <div className="relative z-10 pt-4 border-t border-white/10 group">
+                  <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
+                    {p.title} <ArrowRight className="w-4 h-4 text-electric-lime opacity-0 group-hover:opacity-100 transition-all translate-x-[-10px] group-hover:translate-x-0" />
+                  </h3>
+                  <p className="text-zinc-400 text-sm leading-relaxed">{p.desc}</p>
                 </div>
-              </motion.div>
+              </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Pricing Plans */}
-      <section id="pricing" className="py-32 bg-raisin-black">
-        <div className="max-w-7xl mx-auto px-8">
-          <div className="text-center mb-24">
-            <h2 className="text-5xl font-light mb-4">Pricing Plans</h2>
-            <p className="text-spanish-gray">From first AI steps to enterprise scale—clear, flexible pricing.</p>
+      {/* Pricing Section */}
+      <section id="pricing" className="py-32 bg-zinc-950">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="max-w-3xl mb-24">
+            <h2 className="text-5xl font-light mb-6">Scale Your Operations</h2>
+            <p className="text-zinc-500 text-lg">Predictable pricing for clinical-grade results.</p>
           </div>
-
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              {
-                name: "Starter",
-                price: "$499",
-                period: "/mo",
-                desc: "Start fast, prove value.",
-                features: ["One pilot", "Full audit + 90-day plan", "Light workflow review", "Up to 2 integrations", "Email support (48h)"]
-              },
-              {
-                name: "Pro",
-                price: "$799",
-                period: "/mo",
-                desc: "Scale pilots into systems.",
-                popular: true,
-                features: ["Two pilots or 1 expanded build", "Up to 5 integrations", "Guardrails + human handoff", "Slack support", "RAG setup + monitoring"]
-              },
-              {
-                name: "Enterprise",
-                price: "$999",
-                period: "/mo",
-                desc: "Custom, secure, enterprise-grade.",
-                features: ["Three+ solutions across teams", "Security & compliance review", "Unlimited integrations", "Dedicated PM", "Training program"]
-              }
-            ].map((plan, i) => (
-              <div key={i} className={`p-10 rounded-sm border ${plan.popular ? 'border-electric-lime' : 'border-white/5'} bg-vampire-black relative group flex flex-col h-full`}>
-                {plan.popular && (
-                  <span className="absolute -top-4 left-1/2 -translate-x-1/2 bg-electric-lime text-vampire-black text-[10px] font-black uppercase tracking-widest px-4 py-1 rounded-full">
-                    Most Popular
-                  </span>
-                )}
-                <div className="mb-8">
-                  <h3 className="text-2xl font-light mb-2">{plan.name}</h3>
-                  <div className="flex items-baseline gap-1">
-                    <span className="text-4xl font-bold text-electric-lime">{plan.price}</span>
-                    <span className="text-spanish-gray">{plan.period}</span>
+            {PRICING.map((p, i) => (
+              <div key={i} className={`p-10 border ${p.popular ? 'border-electric-lime bg-electric-lime/5' : 'border-white/5 bg-zinc-900/20'} rounded-sm relative flex flex-col`}>
+                {p.popular && <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 bg-electric-lime text-black text-[10px] font-black uppercase tracking-widest rounded-full">Best ROI</div>}
+                <div className="mb-10 text-center">
+                  <div className="text-zinc-400 text-xs font-bold uppercase tracking-widest mb-4">{p.name}</div>
+                  <div className="flex items-center justify-center gap-1">
+                    <span className="text-xs text-zinc-500 font-bold">$</span>
+                    <span className="text-6xl font-bold">{p.price}</span>
+                    <span className="text-sm text-zinc-600">/mo</span>
                   </div>
-                  <p className="text-sm text-granite-gray mt-4">{plan.desc}</p>
                 </div>
-                <div className="space-y-4 mb-10 flex-grow">
-                  {plan.features.map((feat, idx) => (
-                    <div key={idx} className="flex gap-3 items-center text-sm text-spanish-gray">
-                      <CheckCircle2 className="w-4 h-4 text-electric-lime flex-shrink-0" />
-                      <span>{feat}</span>
+                <div className="space-y-5 mb-12 flex-grow">
+                  {p.feats.map((f, idx) => (
+                    <div key={idx} className="flex items-center gap-3 text-sm text-zinc-400">
+                      <Check className="w-4 h-4 text-electric-lime" /> {f}
                     </div>
                   ))}
                 </div>
-                <button className={`w-full py-4 font-bold uppercase tracking-widest text-xs transition-all ${plan.popular ? 'bg-electric-lime text-vampire-black hover:scale-[1.05]' : 'bg-white/5 text-anti-flash-white hover:bg-white/10'}`}>
+                <button className={`w-full py-4 font-black uppercase tracking-widest text-xs transition-all ${p.popular ? 'bg-electric-lime text-black' : 'bg-white/5 text-white hover:bg-white/10'}`}>
                   Select Plan
                 </button>
               </div>
@@ -369,109 +258,65 @@ export default function App() {
         </div>
       </section>
 
-      {/* FAQ Section */}
-      <section id="faq" className="py-32 bg-vampire-black">
-        <div className="max-w-3xl mx-auto px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-5xl font-light mb-4">Answers?</h2>
-            <p className="text-spanish-gray">Common parameters and system queries.</p>
-          </div>
-
-          <div className="space-y-4">
-            {[
-              { q: "What does the membership include?", a: "Unlimited access to our core AI tools, priority system updates, 24/7 monitoring, and white-glove support from our implementation architects." },
-              { q: "How do I get started with your services?", a: "Simply select a plan above and complete your initial transmission. Our team will reach out within 24 hours to begin your system audit." },
-              { q: "Can I cancel my membership anytime?", a: "Yes. Our systems are built for flexibility. You can pause, upgrade, or deactivate your membership parameters at any point through your dashboard." },
-              { q: "Do I need technical expertise?", a: "Negative. We handle the clinical-grade architecture and deployment. You focus on the business growth while our AI handles the complex workflows." },
-              { q: "Are there additional costs?", a: "No hidden fees. Your membership covers architecture, hosting, and constant optimization. API consumption beyond standard thresholds is billed at cost." },
-              { q: "How often do you release updates?", a: "Daily. Our AI models and integration hooks are constantly evolving to maintain peak performance and security compliance." }
-            ].map((faq, i) => (
-              <details key={i} className="group bg-raisin-black/30 border border-white/5 rounded-sm overflow-hidden transition-all hover:border-electric-lime/30">
-                <summary className="flex items-center justify-between p-6 cursor-pointer list-none">
-                  <span className="text-lg text-anti-flash-white font-light">{faq.q}</span>
-                  <ChevronRight className="w-5 h-5 text-electric-lime transition-transform group-open:rotate-90" />
-                </summary>
-                <div className="px-6 pb-6 text-granite-gray leading-relaxed text-sm border-t border-white/5 pt-4">
-                  {faq.a}
+      {/* Reviews Section */}
+      <section id="reviews" className="py-32">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {REVIEWS.map((r, i) => (
+              <div key={i} className="p-10 bg-zinc-900/30 border border-white/5 rounded-sm relative group overflow-hidden">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-electric-lime/5 blur-3xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                <p className="text-xl font-light italic mb-10 text-zinc-300 relative z-10">"{r.text}"</p>
+                <div className="flex items-center gap-4 relative z-10">
+                  <img src={r.img} className="w-12 h-12 rounded-full border border-white/10 grayscale group-hover:grayscale-0 transition-all" alt={r.name} />
+                  <div>
+                    <h4 className="font-bold text-white text-sm uppercase tracking-widest">{r.name}</h4>
+                    <p className="text-xs text-zinc-500 font-medium">{r.role}</p>
+                  </div>
                 </div>
-              </details>
+              </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Contact Form */}
-      <section id="contact" className="py-32 bg-raisin-black horizon-glow">
-        <div className="max-w-3xl mx-auto px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-5xl font-light mb-4">Let's Talk!</h2>
-            <p className="text-spanish-gray">Send us a message and we will get back to you within 24 hours to arrange a call!</p>
+      {/* FAQ & CTA */}
+      <section className="py-32 bg-zinc-950 border-t border-white/5 overflow-hidden relative">
+        <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-20">
+          <div>
+            <h2 className="text-5xl font-light mb-12">Frequent Queries</h2>
+            <div className="space-y-4">
+              {FAQS.map((f, i) => (
+                <div key={i} className="border border-white/5 bg-black/50 overflow-hidden">
+                  <button
+                    onClick={() => setOpenFaq(openFaq === i ? null : i)}
+                    className="w-full p-6 flex items-center justify-between text-left hover:bg-white/5 transition-colors"
+                  >
+                    <span className="font-medium">{f.q}</span>
+                    {openFaq === i ? <Minus className="w-5 h-5 text-electric-lime" /> : <Plus className="w-5 h-5 text-zinc-600" />}
+                  </button>
+                  {openFaq === i && (
+                    <div className="px-6 pb-6 text-zinc-500 text-sm leading-relaxed border-t border-white/5 pt-4">
+                      {f.a}
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
           </div>
-
-          <form onSubmit={handleFormSubmit} className="space-y-8">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div className="space-y-2">
-                <label className="text-xs font-bold uppercase tracking-widest text-granite-gray">Full Name</label>
-                <input
-                  type="text"
-                  required
-                  className="w-full bg-vampire-black border border-white/10 px-6 py-4 rounded-sm focus:border-electric-lime outline-none transition-colors"
-                  placeholder="John Doe"
-                  value={formState.name}
-                  onChange={(e) => setFormState({ ...formState, name: e.target.value })}
-                />
-              </div>
-              <div className="space-y-2">
-                <label className="text-xs font-bold uppercase tracking-widest text-granite-gray">Corporate Email</label>
-                <input
-                  type="email"
-                  required
-                  className="w-full bg-vampire-black border border-white/10 px-6 py-4 rounded-sm focus:border-electric-lime outline-none transition-colors"
-                  placeholder="john@company.com"
-                  value={formState.email}
-                  onChange={(e) => setFormState({ ...formState, email: e.target.value })}
-                />
-              </div>
-            </div>
-            <div className="space-y-2">
-              <label className="text-xs font-bold uppercase tracking-widest text-granite-gray">Project Parameters</label>
-              <textarea
-                rows={5}
-                required
-                className="w-full bg-vampire-black border border-white/10 px-6 py-4 rounded-sm focus:border-electric-lime outline-none transition-colors resize-none"
-                placeholder="Describe your current bottlenecks..."
-                value={formState.message}
-                onChange={(e) => setFormState({ ...formState, message: e.target.value })}
-              ></textarea>
-            </div>
-            <button type="submit" className="w-full py-5 bg-electric-lime text-vampire-black font-bold uppercase tracking-widest rounded-sm hover:scale-[1.02] transition-all neon-glow">
-              Send Transmission
+          <div className="bg-electric-lime p-16 rounded-sm text-black relative group">
+            <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-5 transition-opacity"></div>
+            <h2 className="text-5xl font-bold mb-6 tracking-tighter leading-none italic uppercase">Ready for Clinical Automation?</h2>
+            <p className="text-black/70 mb-10 text-lg">Send us a message and we'll audit your system within 24 hours.</p>
+            <button className="px-10 py-5 bg-black text-electric-lime font-black uppercase tracking-[0.2em] text-xs flex items-center gap-3">
+              Initialize connection <ArrowRight className="w-4 h-4" />
             </button>
-          </form>
+          </div>
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="py-16 border-t border-white/5 bg-vampire-black">
-        <div className="max-w-7xl mx-auto px-8">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-12">
-            <div className="flex items-center gap-2">
-              <div className="w-6 h-6 bg-electric-lime rounded-sm flex items-center justify-center">
-                <div className="w-3 h-3 border border-vampire-black"></div>
-              </div>
-              <span className="text-lg font-bold tracking-tighter uppercase">8 Square Growth</span>
-            </div>
-
-            <div className="flex gap-8">
-              <a href="#" className="text-granite-gray hover:text-electric-lime transition-colors"><Twitter className="w-5 h-5" /></a>
-              <a href="#" className="text-granite-gray hover:text-electric-lime transition-colors"><Linkedin className="w-5 h-5" /></a>
-              <a href="#" className="text-granite-gray hover:text-electric-lime transition-colors"><Instagram className="w-5 h-5" /></a>
-            </div>
-
-            <p className="text-granite-gray text-sm">
-              © 2026 8 Square Growth. All rights reserved.
-            </p>
-          </div>
+      <footer className="py-12 border-t border-white/5 text-center">
+        <div className="text-[10px] font-black uppercase tracking-[0.4em] text-zinc-600">
+          © 2026 8Square Growth / Advanced AI Architecture
         </div>
       </footer>
     </div>
