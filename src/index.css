@@ -28,12 +28,12 @@
 }
 
 @layer utilities {
-  /* Deep cosmic background with dual lime glows */
+  /* Hero: deep cosmic dark with single centered bottom glow — Electric Lime at very low opacity */
   .hero-bg {
     background-color: #050505;
     background-image:
-      radial-gradient(ellipse 80% 50% at 85% 10%, rgba(87, 255, 30, 0.12) 0%, transparent 60%),
-      radial-gradient(ellipse 60% 40% at 15% 90%, rgba(87, 255, 30, 0.08) 0%, transparent 55%);
+      radial-gradient(ellipse 100% 65% at 50% 78%, rgba(87, 255, 30, 0.11) 0%, transparent 65%),
+      radial-gradient(ellipse 70% 45% at 50% 100%, rgba(87, 255, 30, 0.07) 0%, transparent 55%);
   }
 
   .glass-card {
