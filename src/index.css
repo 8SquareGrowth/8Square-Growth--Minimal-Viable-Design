@@ -3,33 +3,58 @@
 
 @theme {
   --font-sans: "DM Sans", ui-sans-serif, system-ui, sans-serif;
-  
-  --color-vampire-black: #070707;
-  --color-raisin-black: #211A24;
+
+  --color-vampire-black: #050505;
+  --color-raisin-black: #0d0d0d;
   --color-electric-lime: #57ff1e;
   --color-growth-green: #01ff66;
   --color-anti-flash-white: #F1F1F1;
   --color-spanish-gray: #9E9E9E;
   --color-granite-gray: #635766;
 
-  --spacing-8: 2rem; /* 32px */
-  --spacing-16: 4rem; /* 64px */
-  --spacing-32: 8rem; /* 128px */
+  --spacing-8: 2rem;
+  --spacing-16: 4rem;
+  --spacing-32: 8rem;
 }
 
 @layer base {
   body {
     @apply bg-vampire-black text-anti-flash-white font-sans antialiased;
+    background-color: #050505;
+  }
+  * {
+    box-sizing: border-box;
   }
 }
 
 @layer utilities {
-  .horizon-glow {
-    background: radial-gradient(circle at 50% 100%, rgba(87, 255, 30, 0.15) 0%, rgba(7, 7, 7, 0) 70%);
+  /* Deep cosmic background with dual lime glows */
+  .hero-bg {
+    background-color: #050505;
+    background-image:
+      radial-gradient(ellipse 80% 50% at 85% 10%, rgba(87, 255, 30, 0.12) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 40% at 15% 90%, rgba(87, 255, 30, 0.08) 0%, transparent 55%);
   }
-  
+
   .glass-card {
-    @apply bg-white/5 backdrop-blur-md border border-white/10;
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .glass-card-hover {
+    transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .glass-card-hover:hover {
+    background: rgba(87, 255, 30, 0.04);
+    border-color: rgba(87, 255, 30, 0.25);
+    box-shadow: 0 0 30px rgba(87, 255, 30, 0.08);
+  }
+
+  .glow {
+    box-shadow: 0 0 25px rgba(87, 255, 30, 0.2), 0 0 60px rgba(87, 255, 30, 0.08);
   }
 
   .neon-glow {
@@ -37,12 +62,84 @@
   }
 
   .text-gradient {
-    @apply bg-clip-text text-transparent bg-gradient-to-b from-anti-flash-white to-spanish-gray;
+    background-image: linear-gradient(160deg, #ffffff 0%, #a0a0a0 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
+
+  .lime-text-gradient {
+    background-image: linear-gradient(135deg, #57ff1e 0%, #b8ff8c 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
+
+  /* Horizontal scrolling service ticker */
+  .service-ticker-track {
+    display: flex;
+    gap: 12px;
+    width: max-content;
+  }
+
+  .service-ticker-track.row-1 {
+    animation: ticker-left 40s linear infinite;
+  }
+
+  .service-ticker-track.row-2 {
+    animation: ticker-right 45s linear infinite;
+  }
+
+  /* Availability pill pulse */
+  .status-dot {
+    width: 8px;
+    height: 8px;
+    background: #57ff1e;
+    border-radius: 50%;
+    position: relative;
+  }
+
+  .status-dot::before {
+    content: '';
+    position: absolute;
+    inset: -3px;
+    border-radius: 50%;
+    background: rgba(87, 255, 30, 0.4);
+    animation: pulse-ring 2s ease-out infinite;
+  }
+
+  /* Process step connector line */
+  .process-line::after {
+    content: '';
+    position: absolute;
+    top: 24px;
+    left: calc(100% + 16px);
+    width: calc(100% - 32px);
+    height: 1px;
+    background: linear-gradient(90deg, rgba(87,255,30,0.3), rgba(87,255,30,0.05));
   }
 }
 
+@keyframes ticker-left {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+@keyframes ticker-right {
+  0%   { transform: translateX(-50%); }
+  100% { transform: translateX(0); }
+}
+
+@keyframes pulse-ring {
+  0%   { transform: scale(1); opacity: 0.8; }
+  70%  { transform: scale(2); opacity: 0; }
+  100% { transform: scale(2); opacity: 0; }
+}
+
 @keyframes marquee {
-  0% { transform: translateX(0); }
+  0%   { transform: translateX(0); }
   100% { transform: translateX(-50%); }
 }
 
