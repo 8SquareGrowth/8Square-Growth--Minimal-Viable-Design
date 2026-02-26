@@ -6,29 +6,21 @@ import {
   Zap,
   BarChart3,
   Users,
-  MessageSquare,
-  Cpu,
-  BrainCircuit,
   Mail,
   Calendar,
   ShoppingCart,
   FileText,
   Headphones,
   Search,
-  Plus,
-  Minus,
-  Check,
   ChevronRight,
   TrendingUp,
-  Clock,
   Target,
-  Layers,
 } from "lucide-react";
 
-// ─── Brand Color ────────────────────────────────────────────────────────────
+// ─── Brand Color ─────────────────────────────────────────────────────────────
 const LIME = "#57ff1e";
 
-// ─── Data ───────────────────────────────────────────────────────────────────
+// ─── Data ────────────────────────────────────────────────────────────────────
 
 const TICKER_ROW_1 = [
   { label: "Voice Support Assistant", metric: "2X RECURRING REVENUE", icon: <Headphones className="w-4 h-4" /> },
@@ -52,70 +44,88 @@ const TICKER_ROW_2 = [
   { label: "Payment Recovery Nudges", metric: "57% CONVERSION INCREASED", icon: <TrendingUp className="w-4 h-4" /> },
 ];
 
-const STRATEGY_FEATURES = [
+const ADS_FIX_STEPS = [
   {
-    label: "01 / Discovery",
-    title: "Architect your revenue engine",
-    desc: "We audit your offers, delivery and tooling to blueprint a single operating system instead of scattered automations.",
+    label: "01 / Audit",
+    title: "Stop the bleed first",
+    desc: "We analyse exactly where your ad spend is leaking — tracking gaps, audience mismatch, and landing pages that kill conversions.",
   },
   {
-    label: "02 / Prioritisation",
-    title: "Rank every growth lever",
-    desc: "We score impact vs. effort so your first AI systems attack the highest‑leverage bottlenecks in your pipeline.",
+    label: "02 / System",
+    title: "Build a conversion path",
+    desc: "We rebuild the journey from ad click to booked call so every euro you spend has a measurable path to revenue.",
   },
   {
-    label: "03 / Governance",
-    title: "Guardrails, not guesswork",
-    desc: "We define clear ownership, KPIs and safety rails so AI becomes an accountable member of your team.",
+    label: "03 / Optimise",
+    title: "Data-driven improvement",
+    desc: "Monthly performance reviews with clear numbers: cost per lead, cost per customer, and ROI — no jargon, no vanity metrics.",
   },
 ];
 
 const LEAD_SYSTEMS_POINTS = [
   {
+    metric: "3–5x",
+    title: "More qualified enquiries",
+    desc: "Optimised landing pages, SEO content, and conversion paths that bring in buyers, not browsers.",
+  },
+  {
     metric: "24/7",
-    title: "Always‑on qualification",
-    desc: "AI agents handle inbound leads across forms, chat and email so no opportunity sits idle overnight.",
+    title: "Always on, always capturing",
+    desc: "Your website and digital presence work while you sleep — no leads fall through the cracks.",
   },
   {
-    metric: "12–24x",
-    title: "Follow‑up touchpoints",
-    desc: "Sequenced outreach across channels that mirrors your best closer and compounds trust automatically.",
-  },
-  {
-    metric: "≤5 min",
-    title: "Speed‑to‑lead",
-    desc: "Hot prospects hear back in minutes, while your team stays focused on strategy and delivery.",
+    metric: "≤48h",
+    title: "Fast to first results",
+    desc: "Quick-win optimisations you can see working within weeks, not months.",
   },
 ];
 
 const TESTIMONIALS = [
   {
-    name: "Jordan Patel",
-    role: "Founder · B2B Creative Studio",
-    headline: "From scattered tools to a single growth engine.",
+    name: "Sarah Mitchell",
+    role: "Founder · E-commerce Brand (32 staff)",
+    headline: "Finally stopped wasting money on ads that went nowhere.",
     quote:
-      "We finally have one AI system owning intake, routing and follow‑up. Pipeline feels calm, even at record volume.",
-    metric: "+38% qualified opportunities",
+      "Within 8 weeks 8Square had rebuilt our entire digital funnel. Our cost per lead dropped by half and enquiries doubled. We finally know our marketing is working.",
+    metric: "Cost per lead −52%",
   },
   {
-    name: "Danielle Cho",
-    role: "Agency Owner · Paid Media",
-    headline: "Lead flow without adding headcount.",
+    name: "Daniel Okafor",
+    role: "MD · B2B Services (18 staff)",
+    headline: "We went from feast-or-famine to a predictable pipeline.",
     quote:
-      "Our reps now step into calls with fully‑qualified, context‑rich leads. The AI handles the grind—we handle strategy.",
-    metric: "20+ hours saved per week",
+      "We used to rely entirely on referrals. Now we have a consistent stream of inbound enquiries every week. The website actually works for us now.",
+    metric: "+3.4x inbound leads",
   },
   {
-    name: "Luca Moretti",
-    role: "Ops Director · RevOps Collective",
-    headline: "Clinical implementation that our team actually trusts.",
+    name: "Priya Sharma",
+    role: "Co-Founder · SaaS Startup (12 staff)",
+    headline: "Ranked on page 1 after years of being invisible on Google.",
     quote:
-      "Everything is documented, observable and reversible. It feels like working with an internal product squad, not a vendor.",
-    metric: "Zero incidents across launch",
+      "We'd paid for SEO for two years and barely moved. 8Square identified the real issues in weeks. Six months later we're ranking for our most valuable keywords.",
+    metric: "Page 1 in 6 months",
   },
 ];
 
-// ─── Animation Variants ──────────────────────────────────────────────────────
+const TRUST_METRICS = [
+  {
+    value: "206%",
+    label: "Organic Traffic Growth",
+    desc: "More qualified buyers finding your product without paid spend — in 12 months.",
+  },
+  {
+    value: "3×",
+    label: "Pipeline Value Increase",
+    desc: "After repositioning the offer and tightening ICP targeting.",
+  },
+  {
+    value: "86%",
+    label: "Search Visibility Increase",
+    desc: "Appearing in AI tools and on page one — in under 5 months.",
+  },
+];
+
+// ─── Animation Variants ───────────────────────────────────────────────────────
 
 const fadeUp = {
   hidden: { opacity: 0, y: 32 },
@@ -126,15 +136,7 @@ const fadeUp = {
   }),
 };
 
-const fadeIn = {
-  hidden: { opacity: 0 },
-  visible: (i: number = 0) => ({
-    opacity: 1,
-    transition: { duration: 0.6, delay: i * 0.08 },
-  }),
-};
-
-// ─── Sub-Components ──────────────────────────────────────────────────────────
+// ─── Sub-Components ───────────────────────────────────────────────────────────
 
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
@@ -183,22 +185,7 @@ function TickerCard({
   );
 }
 
-function AnimatedSection({ children, className = "" }: { children: React.ReactNode; className?: string }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-80px" });
-  return (
-    <motion.div
-      ref={ref}
-      initial="hidden"
-      animate={inView ? "visible" : "hidden"}
-      className={className}
-    >
-      {children}
-    </motion.div>
-  );
-}
-
-// ─── Nav ─────────────────────────────────────────────────────────────────────
+// ─── Nav ──────────────────────────────────────────────────────────────────────
 
 function Nav() {
   const [scrolled, setScrolled] = useState(false);
@@ -223,7 +210,6 @@ function Nav() {
       }}
     >
       <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-        {/* Logo */}
         <div className="flex items-center">
           <img
             src="/8square-logo.png"
@@ -232,12 +218,11 @@ function Nav() {
           />
         </div>
 
-        {/* Links */}
         <div className="hidden md:flex items-center gap-10 text-[11px] font-bold uppercase tracking-widest text-zinc-500">
           {[
-            { label: "Strategy", href: "#strategy" },
-            { label: "Lead Systems", href: "#systems" },
-            { label: "Proof", href: "#proof" },
+            { label: "The Problem", href: "#pain-ads" },
+            { label: "Lead Growth", href: "#pain-leads" },
+            { label: "Results", href: "#proof" },
           ].map((item) => (
             <a
               key={item.label}
@@ -249,16 +234,16 @@ function Nav() {
           ))}
         </div>
 
-        {/* CTA */}
-        <motion.button
+        <motion.a
+          href="#start"
           whileHover={{ scale: 1.04 }}
           whileTap={{ scale: 0.97 }}
-          className="px-5 py-2.5 rounded-full text-[11px] font-black uppercase tracking-widest transition-all text-black"
+          className="px-5 py-2.5 rounded-full text-[11px] font-black uppercase tracking-widest transition-all text-black cursor-pointer"
           style={{ background: LIME }}
           id="nav-cta-btn"
         >
-          Get In Touch
-        </motion.button>
+          Get My Free Audit
+        </motion.a>
       </div>
     </motion.nav>
   );
@@ -287,9 +272,8 @@ function Hero() {
         }}
       />
 
-      {/* ── Centered hero text block ── */}
+      {/* Centered hero text block */}
       <div className="relative z-10 max-w-4xl mx-auto px-6 pt-40 pb-0 text-center">
-
         {/* Headline */}
         <motion.h1
           initial={{ opacity: 0, y: 32 }}
@@ -298,8 +282,8 @@ function Hero() {
           className="font-bold leading-[1.1] tracking-tight mb-6"
           style={{ fontSize: "clamp(2.4rem, 6vw, 4.5rem)" }}
         >
-          <span className="text-gradient block">Transform Your Agency</span>
-          <span className="text-gradient block">with Structured AI Systems</span>
+          <span className="text-gradient block">Build Pipeline. Drive Growth.</span>
+          <span className="text-gradient block">Scale With Confidence.</span>
         </motion.h1>
 
         {/* Supporting copy */}
@@ -309,61 +293,57 @@ function Hero() {
           transition={{ duration: 0.75, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
           className="max-w-md mx-auto text-zinc-400 text-base leading-relaxed mb-10"
         >
-          We build AI growth systems for agencies billing{" "}
-          <span className="text-white font-medium">$20k–$30k/month</span>{" "}
-          who are ready to scale—without scaling their problems.
+          We help SMEs and startups turn their digital presence into a predictable lead generation machine — without
+          wasting another penny on ads that don&apos;t convert.
         </motion.p>
 
-        {/* CTA buttons */}
+        {/* CTAs */}
         <motion.div
           initial={{ opacity: 0, y: 18 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.32, ease: [0.22, 1, 0.36, 1] }}
           className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-20"
         >
-          {/* Secondary — dark glass, subtle lime border */}
-          <motion.button
+          <motion.a
+            href="#pain-ads"
             whileHover={{ scale: 1.03, boxShadow: "0 0 22px rgba(87,255,30,0.18)" }}
             whileTap={{ scale: 0.97 }}
             id="hero-secondary-cta"
-            className="px-8 py-3.5 rounded-full text-sm font-semibold text-white backdrop-blur-sm transition-all"
+            className="px-8 py-3.5 rounded-full text-sm font-semibold text-white backdrop-blur-sm transition-all cursor-pointer"
             style={{
               background: "rgba(255,255,255,0.06)",
               border: "1px solid rgba(255,255,255,0.18)",
             }}
           >
-            Get Started
-          </motion.button>
+            See How It Works
+          </motion.a>
 
-          {/* Primary — Electric Lime fill with outer glow */}
-          <motion.button
+          <motion.a
+            href="#start"
             whileHover={{ scale: 1.03, boxShadow: "0 0 36px rgba(87,255,30,0.45)" }}
             whileTap={{ scale: 0.97 }}
             id="hero-primary-cta"
-            className="px-8 py-3.5 rounded-full text-sm font-semibold text-black transition-all"
+            className="px-8 py-3.5 rounded-full text-sm font-semibold text-black transition-all cursor-pointer"
             style={{
               background: LIME,
               boxShadow: "0 0 24px rgba(87,255,30,0.30)",
             }}
           >
-            Book a Call
-          </motion.button>
+            Get My Free Audit
+          </motion.a>
         </motion.div>
       </div>
 
-      {/* ── Trusted By strip ── */}
+      {/* Trusted by strip */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, delay: 0.52, ease: [0.22, 1, 0.36, 1] }}
         className="relative z-10 pb-28 px-6"
       >
-        {/* Label */}
         <p className="text-center text-zinc-500 text-[11px] font-semibold uppercase tracking-[0.25em] mb-7">
-          Trusted by 200+ brands
+          Trusted by growing businesses
         </p>
-
-        {/* Logo row */}
         <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-5 max-w-3xl mx-auto">
           {BRAND_LOGOS.map((brand) => (
             <img
@@ -377,7 +357,7 @@ function Hero() {
         </div>
       </motion.div>
 
-      {/* Bottom fade to next section */}
+      {/* Bottom fade */}
       <div
         className="absolute bottom-0 left-0 right-0 h-36 pointer-events-none"
         style={{ background: "linear-gradient(to bottom, transparent, #050505)" }}
@@ -386,14 +366,20 @@ function Hero() {
   );
 }
 
-// ─── Value Section 1: AI Strategy Architecture ───────────────────────────────
+// ─── Pain Point Section 1: Ads ────────────────────────────────────────────────
 
-function StrategyArchitectureSection() {
+function PainPointAdsSection() {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
 
+  const ADS_STATS = [
+    { icon: <BarChart3 className="w-5 h-5" />, value: "3.2×", label: "Average ROAS" },
+    { icon: <TrendingUp className="w-5 h-5" />, value: "−67%", label: "Lower CPL" },
+    { icon: <Target className="w-5 h-5" />, value: "€0", label: "Wasted spend" },
+  ];
+
   return (
-    <section id="strategy" ref={ref} className="py-32 border-t" style={{ borderColor: "rgba(255,255,255,0.05)" }}>
+    <section id="pain-ads" ref={ref} className="py-32 border-t" style={{ borderColor: "rgba(255,255,255,0.05)" }}>
       <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] gap-16 items-center">
         <motion.div
           variants={fadeUp}
@@ -401,33 +387,25 @@ function StrategyArchitectureSection() {
           animate={inView ? "visible" : "hidden"}
           className="space-y-6"
         >
-          <SectionLabel>// AI Strategy Architecture</SectionLabel>
+          <SectionLabel>// The Ads Problem</SectionLabel>
           <h2 className="text-4xl md:text-5xl font-bold text-gradient leading-tight">
-            A 3D blueprint for scalable, AI‑driven growth.
+            Burning Cash on Ads That Bring Zero New Customers?
           </h2>
           <p className="text-sm md:text-base text-zinc-400 leading-relaxed max-w-xl">
-            We don&apos;t bolt AI onto random workflows. We architect an end‑to‑end growth system that aligns offers,
-            operations and data—so every agent, automation and human is pulling in the same direction.
+            You&apos;ve tried Facebook, Instagram, maybe even Google Ads. The agency promised leads. The budget
+            disappeared. The customers didn&apos;t arrive. You&apos;re not alone — most SME ad spend is wasted because
+            there&apos;s no system connecting the click to the close.
           </p>
           <div className="flex flex-wrap gap-3 text-[10px] font-black uppercase tracking-[0.25em]">
-            <span
-              className="px-3 py-1 rounded-full"
-              style={{ border: `1px solid ${LIME}`, background: "rgba(87,255,30,0.08)", color: LIME }}
-            >
-              Discovery
-            </span>
-            <span
-              className="px-3 py-1 rounded-full"
-              style={{ border: `1px solid ${LIME}`, background: "rgba(87,255,30,0.06)", color: LIME }}
-            >
-              Architecture
-            </span>
-            <span
-              className="px-3 py-1 rounded-full"
-              style={{ border: `1px solid ${LIME}`, background: "rgba(87,255,30,0.06)", color: LIME }}
-            >
-              Governance
-            </span>
+            {["Ads Audit", "Conversion Path", "ROI Tracking"].map((tag) => (
+              <span
+                key={tag}
+                className="px-3 py-1 rounded-full"
+                style={{ border: `1px solid ${LIME}`, background: "rgba(87,255,30,0.07)", color: LIME }}
+              >
+                {tag}
+              </span>
+            ))}
           </div>
         </motion.div>
 
@@ -436,52 +414,66 @@ function StrategyArchitectureSection() {
           initial="hidden"
           animate={inView ? "visible" : "hidden"}
           custom={1}
-          className="grid grid-cols-1 sm:grid-cols-3 gap-4"
+          className="space-y-4"
         >
-          {STRATEGY_FEATURES.map((item, i) => (
-            <div
-              key={item.title}
-              className="relative glass-card glass-card-hover rounded-2xl p-6 flex flex-col justify-between overflow-hidden"
-              id={`strategy-card-${i}`}
-            >
+          {/* 3 fix-step glass cards */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            {ADS_FIX_STEPS.map((item, i) => (
               <div
-                className="absolute inset-0 opacity-60 pointer-events-none"
-                style={{
-                  background:
-                    "radial-gradient(circle at top left, rgba(87,255,30,0.16), transparent 55%)",
-                }}
-              />
-              <div className="relative z-10 space-y-4">
-                <div className="text-[10px] font-black uppercase tracking-[0.25em] text-zinc-500 flex items-center gap-2">
-                  <span className="inline-flex items-center justify-center w-6 h-6 rounded-full border border-current text-[9px]" style={{ color: LIME }}>
-                    {i + 1}
-                  </span>
-                  <span>{item.label}</span>
+                key={item.title}
+                className="relative glass-card glass-card-hover rounded-2xl p-6 flex flex-col justify-between overflow-hidden"
+                id={`ads-card-${i}`}
+              >
+                <div
+                  className="absolute inset-0 opacity-60 pointer-events-none"
+                  style={{ background: "radial-gradient(circle at top left, rgba(87,255,30,0.16), transparent 55%)" }}
+                />
+                <div className="relative z-10 space-y-3">
+                  <div className="text-[10px] font-black uppercase tracking-[0.25em] text-zinc-500 flex items-center gap-2">
+                    <span
+                      className="inline-flex items-center justify-center w-6 h-6 rounded-full border text-[9px]"
+                      style={{ color: LIME, borderColor: LIME }}
+                    >
+                      {i + 1}
+                    </span>
+                    <span>{item.label}</span>
+                  </div>
+                  <h3 className="text-sm font-semibold text-white">{item.title}</h3>
+                  <p className="text-xs text-zinc-400 leading-relaxed">{item.desc}</p>
                 </div>
-                <h3 className="text-sm font-semibold text-white">{item.title}</h3>
-                <p className="text-xs text-zinc-400 leading-relaxed">{item.desc}</p>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
+
+          {/* Results stat panel */}
+          <div className="glass-card rounded-2xl p-6 grid grid-cols-3 gap-4">
+            {ADS_STATS.map((stat) => (
+              <div key={stat.label} className="text-center">
+                <div
+                  className="w-9 h-9 rounded-lg flex items-center justify-center mx-auto mb-3"
+                  style={{ background: "rgba(87,255,30,0.08)", color: LIME }}
+                >
+                  {stat.icon}
+                </div>
+                <div className="text-xl font-bold text-white mb-0.5">{stat.value}</div>
+                <div className="text-[10px] font-semibold uppercase tracking-widest text-zinc-500">{stat.label}</div>
+              </div>
+            ))}
+          </div>
         </motion.div>
       </div>
     </section>
   );
 }
 
-// ─── Value Section 2: Automated Lead Systems ─────────────────────────────────
+// ─── Pain Point Section 2: Lead Generation ───────────────────────────────────
 
-function AutomatedLeadSystemsSection() {
+function PainPointLeadsSection() {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
 
   return (
-    <section
-      id="systems"
-      ref={ref}
-      className="py-32"
-      style={{ background: "#070707" }}
-    >
+    <section id="pain-leads" ref={ref} className="py-32" style={{ background: "#070707" }}>
       <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] gap-16 items-center">
         <motion.div
           variants={fadeUp}
@@ -489,13 +481,14 @@ function AutomatedLeadSystemsSection() {
           animate={inView ? "visible" : "hidden"}
           className="space-y-6"
         >
-          <SectionLabel>// Automated Lead Systems</SectionLabel>
+          <SectionLabel>// The Lead Drought</SectionLabel>
           <h2 className="text-4xl md:text-5xl font-bold text-gradient leading-tight max-w-xl">
-            Turn every touchpoint into a structured, AI‑driven pipeline.
+            Can&apos;t Find Enough Quality Leads? Here&apos;s Why — and How We Fix It.
           </h2>
           <p className="text-sm md:text-base text-zinc-400 leading-relaxed max-w-xl">
-            From first click to booked call, we design AI systems that capture context, qualify fit and keep your
-            expertise front‑and‑centre. No spammy sequences—just orchestrated, on‑brand conversations.
+            Relying on word-of-mouth and cold outreach keeps your pipeline unpredictable. If new business dries up for a
+            month, everything stalls. We build always-on digital systems that attract, capture, and qualify leads while
+            you focus on running your business.
           </p>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-8">
@@ -507,7 +500,7 @@ function AutomatedLeadSystemsSection() {
                 animate={inView ? "visible" : "hidden"}
                 custom={i}
                 className="glass-card rounded-2xl p-5 flex flex-col justify-between"
-                id={`systems-point-${i}`}
+                id={`leads-point-${i}`}
               >
                 <div className="mb-4">
                   <div className="text-xs font-black uppercase tracking-[0.25em] text-zinc-500 mb-2">
@@ -533,28 +526,28 @@ function AutomatedLeadSystemsSection() {
         >
           <div
             className="absolute -top-16 -right-10 w-56 h-56 rounded-full blur-3xl pointer-events-none"
-            style={{ background: "rgba(87,255,30,0.24)" }}
+            style={{ background: "rgba(87,255,30,0.22)" }}
           />
           <div className="relative z-10">
             <div className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.25em] mb-6 text-zinc-500">
               <span className="status-dot" />
-              Live lead orchestration
+              Always-on lead engine
             </div>
             <h3 className="text-xl md:text-2xl font-bold text-white mb-4">
-              One pipeline. Dozens of intelligent touchpoints.
+              One system. Consistent pipeline.
             </h3>
             <p className="text-sm text-zinc-300 leading-relaxed mb-6">
-              We connect your forms, CRM, calendar and comms into a single orchestrated system so every lead is seen,
-              scored and nurtured without manual chasing.
+              We connect your website, social presence, and outreach into a single lead engine — so you always know
+              where your next customer is coming from.
             </p>
-            <ul className="space-y-3 text-sm text-zinc-300">
+            <ul className="space-y-3">
               {[
-                "Dynamic routing based on fit, intent and segment.",
-                "Human‑in‑the‑loop approvals for key decision moments.",
-                "Visibility dashboards so you can see every touchpoint at a glance.",
+                "Targeted content that attracts your ideal buyer.",
+                "Lead capture pages that convert visitors into enquiries.",
+                "Automated follow-up so no warm lead goes cold.",
               ].map((item) => (
                 <li key={item} className="flex items-start gap-3">
-                  <CheckCircle2 className="w-4 h-4 mt-1 shrink-0" style={{ color: LIME }} />
+                  <CheckCircle2 className="w-4 h-4 mt-0.5 shrink-0" style={{ color: LIME }} />
                   <span className="text-xs md:text-sm text-zinc-300">{item}</span>
                 </li>
               ))}
@@ -573,11 +566,7 @@ function ProofAndTestimonialsSection() {
   const inView = useInView(ref, { once: true, margin: "-80px" });
 
   return (
-    <section
-      id="proof"
-      ref={ref}
-      className="py-32"
-    >
+    <section id="proof" ref={ref} className="py-32">
       <div className="max-w-7xl mx-auto px-6">
         <motion.div
           variants={fadeUp}
@@ -585,13 +574,12 @@ function ProofAndTestimonialsSection() {
           animate={inView ? "visible" : "hidden"}
           className="mb-16 text-center"
         >
-          <SectionLabel>// Proof & Testimonials</SectionLabel>
+          <SectionLabel>// Real Results</SectionLabel>
           <h2 className="text-4xl md:text-5xl font-bold text-gradient leading-tight mb-4">
-            Built for operators who care about precision.
+            What Growing Businesses Say After 90 Days.
           </h2>
           <p className="text-sm md:text-base text-zinc-400 max-w-2xl mx-auto leading-relaxed">
-            Agencies and teams use 8Square Growth to turn messy, ad‑hoc workflows into clean, measurable systems that
-            scale without chaos.
+            We work with ambitious SMEs and startups who are done guessing and ready to grow with a system behind them.
           </p>
         </motion.div>
 
@@ -608,10 +596,7 @@ function ProofAndTestimonialsSection() {
             >
               <div
                 className="absolute inset-0 opacity-60 pointer-events-none"
-                style={{
-                  background:
-                    "radial-gradient(circle at top right, rgba(87,255,30,0.18), transparent 60%)",
-                }}
+                style={{ background: "radial-gradient(circle at top right, rgba(87,255,30,0.18), transparent 60%)" }}
               />
               <div className="relative z-10 flex flex-col gap-4">
                 <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.25em] text-zinc-500">
@@ -626,7 +611,7 @@ function ProofAndTestimonialsSection() {
                     <div className="text-[11px] text-zinc-500">{t.role}</div>
                   </div>
                   <span
-                    className="text-[10px] font-black uppercase tracking-[0.2em] px-3 py-1 rounded-full"
+                    className="text-[10px] font-black uppercase tracking-[0.2em] px-3 py-1 rounded-full whitespace-nowrap"
                     style={{ border: `1px solid ${LIME}`, color: LIME, background: "rgba(87,255,30,0.06)" }}
                   >
                     {t.metric}
@@ -641,7 +626,185 @@ function ProofAndTestimonialsSection() {
   );
 }
 
-// ─── Integrated Lead Form ─────────────────────────────────────────────────────
+// ─── Trust / Credibility Bar ──────────────────────────────────────────────────
+
+function TrustBar() {
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { once: true, margin: "-60px" });
+
+  return (
+    <section
+      ref={ref}
+      className="py-20 border-y"
+      style={{ borderColor: "rgba(255,255,255,0.05)", background: "rgba(87,255,30,0.02)" }}
+    >
+      <div className="max-w-5xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-12 text-center">
+        {TRUST_METRICS.map((m, i) => (
+          <motion.div
+            key={m.label}
+            variants={fadeUp}
+            initial="hidden"
+            animate={inView ? "visible" : "hidden"}
+            custom={i}
+          >
+            <div className="text-4xl md:text-5xl font-bold mb-2" style={{ color: LIME }}>
+              {m.value}
+            </div>
+            <div className="text-sm font-semibold text-white mb-2">{m.label}</div>
+            <p className="text-xs text-zinc-500 leading-relaxed max-w-xs mx-auto">{m.desc}</p>
+          </motion.div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+// ─── Multi-Step Lead Form ─────────────────────────────────────────────────────
+
+function MultiStepLeadForm() {
+  const [step, setStep] = useState<1 | 2>(1);
+  const [dir, setDir] = useState(1);
+
+  const goNext = () => { setDir(1); setStep(2); };
+  const goBack = () => { setDir(-1); setStep(1); };
+
+  const inputClass =
+    "w-full bg-black/40 rounded-xl px-4 py-3.5 text-sm text-white border outline-none focus:border-[#57ff1e] transition-colors placeholder-zinc-600";
+  const inputStyle = { borderColor: "rgba(255,255,255,0.12)" };
+  const labelClass = "block text-[11px] font-bold uppercase tracking-[0.2em] text-zinc-500 mb-2";
+
+  const stepVariants = {
+    enter: (d: number) => ({ opacity: 0, x: d * 40 }),
+    center: { opacity: 1, x: 0 },
+    exit: (d: number) => ({ opacity: 0, x: d * -40 }),
+  };
+
+  return (
+    <div className="glass-card rounded-3xl overflow-hidden">
+      {/* Progress bar */}
+      <div className="h-1 w-full" style={{ background: "rgba(255,255,255,0.06)" }}>
+        <motion.div
+          className="h-full"
+          style={{ background: LIME }}
+          animate={{ width: step === 1 ? "50%" : "100%" }}
+          transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+        />
+      </div>
+
+      <div className="p-8 md:p-10 relative overflow-hidden min-h-[300px] flex flex-col justify-center">
+        {/* Lime glow */}
+        <div
+          className="absolute -top-20 -right-10 w-64 h-64 rounded-full blur-3xl pointer-events-none"
+          style={{ background: "rgba(87,255,30,0.15)" }}
+        />
+
+        <AnimatePresence mode="wait" custom={dir}>
+          {step === 1 ? (
+            <motion.div
+              key="step1"
+              custom={dir}
+              variants={stepVariants}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+              className="relative z-10 space-y-6"
+            >
+              <div className="text-center">
+                <h3 className="text-xl font-bold text-white mb-1">Let&apos;s start with your name</h3>
+                <p className="text-[11px] uppercase tracking-[0.2em] text-zinc-500">Step 1 of 2</p>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className={labelClass}>First Name</label>
+                  <input
+                    type="text"
+                    className={inputClass}
+                    style={inputStyle}
+                    placeholder="Jane"
+                  />
+                </div>
+                <div>
+                  <label className={labelClass}>Last Name</label>
+                  <input
+                    type="text"
+                    className={inputClass}
+                    style={inputStyle}
+                    placeholder="Smith"
+                  />
+                </div>
+              </div>
+
+              <button
+                onClick={goNext}
+                className="w-full py-4 rounded-xl text-sm font-bold text-black transition-all"
+                style={{ background: "#ffffff", boxShadow: "0 2px 16px rgba(255,255,255,0.08)" }}
+              >
+                Next Step →
+              </button>
+            </motion.div>
+          ) : (
+            <motion.form
+              key="step2"
+              custom={dir}
+              variants={stepVariants}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+              className="relative z-10 space-y-6"
+              onSubmit={(e) => e.preventDefault()}
+            >
+              <div className="text-center">
+                <h3 className="text-xl font-bold text-white mb-1">What&apos;s your best email?</h3>
+                <p className="text-[11px] uppercase tracking-[0.2em] text-zinc-500">Step 2 of 2</p>
+              </div>
+
+              <div>
+                <label className={labelClass}>Email</label>
+                <input
+                  type="email"
+                  required
+                  className={inputClass}
+                  style={inputStyle}
+                  placeholder="name@company.com"
+                />
+              </div>
+
+              <div className="flex items-center gap-3">
+                <button
+                  type="button"
+                  onClick={goBack}
+                  className="px-5 py-4 rounded-xl text-sm font-bold text-white transition-all shrink-0"
+                  style={{
+                    background: "rgba(255,255,255,0.06)",
+                    border: "1px solid rgba(255,255,255,0.12)",
+                  }}
+                >
+                  ←
+                </button>
+                <button
+                  type="submit"
+                  className="flex-1 py-4 rounded-xl text-sm font-bold text-black flex items-center justify-center gap-2 transition-all"
+                  style={{
+                    background: LIME,
+                    boxShadow: "0 0 24px rgba(87,255,30,0.30)",
+                  }}
+                >
+                  Get the System
+                  <ArrowRight className="w-4 h-4" />
+                </button>
+              </div>
+            </motion.form>
+          )}
+        </AnimatePresence>
+      </div>
+    </div>
+  );
+}
+
+// ─── Lead Form Section ────────────────────────────────────────────────────────
 
 function LeadFormSection() {
   const ref = useRef<HTMLDivElement>(null);
@@ -649,31 +812,31 @@ function LeadFormSection() {
 
   return (
     <section
-      id="contact"
+      id="start"
       ref={ref}
       className="py-32 border-t"
       style={{ borderColor: "rgba(255,255,255,0.05)" }}
     >
-      <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] gap-16 items-start">
+      <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] gap-16 items-center">
         <motion.div
           variants={fadeUp}
           initial="hidden"
           animate={inView ? "visible" : "hidden"}
           className="space-y-6"
         >
-          <SectionLabel>// Get a Clinical Growth Blueprint</SectionLabel>
+          <SectionLabel>// Your Free Growth Audit</SectionLabel>
           <h2 className="text-3xl md:text-4xl font-bold text-gradient leading-tight">
-            Tell us where you&apos;re stuck. We&apos;ll map the systems that unstick you.
+            Get Your Free Digital Growth Audit
           </h2>
           <p className="text-sm md:text-base text-zinc-400 leading-relaxed">
-            Share a snapshot of your current pipeline, delivery load and tooling. Within 48 hours we&apos;ll respond
-            with a concise system architecture outlining quick wins and high‑leverage AI plays.
+            Answer two quick questions and we&apos;ll send you a personalised breakdown of exactly where your digital
+            presence is leaking leads — and what to do about it. Free. No sales call required.
           </p>
-          <ul className="space-y-3 text-sm text-zinc-300">
+          <ul className="space-y-3">
             {[
-              "No fluff—just a clear diagram of the AI systems we would build first.",
-              "You keep the blueprint whether or not we work together.",
-              "Designed for agencies billing $20k–$30k/month who want compounding systems, not one‑off hacks.",
+              "Find out why your ads aren't converting.",
+              "Discover why Google isn't showing your site.",
+              "See the exact quick wins that will generate more enquiries.",
             ].map((item) => (
               <li key={item} className="flex items-start gap-3">
                 <ChevronRight className="w-4 h-4 mt-1 shrink-0" style={{ color: LIME }} />
@@ -688,102 +851,8 @@ function LeadFormSection() {
           initial="hidden"
           animate={inView ? "visible" : "hidden"}
           custom={1}
-          className="glass-card rounded-3xl p-8 md:p-10 relative overflow-hidden"
         >
-          <div
-            className="absolute -top-24 -right-10 w-64 h-64 rounded-full blur-3xl pointer-events-none"
-            style={{ background: "rgba(87,255,30,0.22)" }}
-          />
-          <form
-            className="relative z-10 space-y-6"
-            onSubmit={(e) => e.preventDefault()}
-          >
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-[11px] font-bold uppercase tracking-[0.2em] text-zinc-500 mb-2">
-                  Full Name
-                </label>
-                <input
-                  type="text"
-                  required
-                  className="w-full bg-black/40 rounded-lg px-4 py-3 text-sm border outline-none"
-                  style={{ borderColor: "rgba(255,255,255,0.12)" }}
-                  placeholder="Alex Rivera"
-                />
-              </div>
-              <div>
-                <label className="block text-[11px] font-bold uppercase tracking-[0.2em] text-zinc-500 mb-2">
-                  Work Email
-                </label>
-                <input
-                  type="email"
-                  required
-                  className="w-full bg-black/40 rounded-lg px-4 py-3 text-sm border outline-none"
-                  style={{ borderColor: "rgba(255,255,255,0.12)" }}
-                  placeholder="you@agency.com"
-                />
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-[11px] font-bold uppercase tracking-[0.2em] text-zinc-500 mb-2">
-                  Agency / Company
-                </label>
-                <input
-                  type="text"
-                  className="w-full bg-black/40 rounded-lg px-4 py-3 text-sm border outline-none"
-                  style={{ borderColor: "rgba(255,255,255,0.12)" }}
-                  placeholder="8Square Digital"
-                />
-              </div>
-              <div>
-                <label className="block text-[11px] font-bold uppercase tracking-[0.2em] text-zinc-500 mb-2">
-                  Monthly Revenue Band
-                </label>
-                <select
-                  className="w-full bg-black/40 rounded-lg px-4 py-3 text-sm border outline-none"
-                  style={{ borderColor: "rgba(255,255,255,0.12)" }}
-                  defaultValue=""
-                >
-                  <option value="" disabled>
-                    Select a range
-                  </option>
-                  <option>$15k–$20k / mo</option>
-                  <option>$20k–$30k / mo</option>
-                  <option>$30k–$50k / mo</option>
-                  <option>$50k+ / mo</option>
-                </select>
-              </div>
-            </div>
-
-            <div>
-              <label className="block text-[11px] font-bold uppercase tracking-[0.2em] text-zinc-500 mb-2">
-                Biggest Bottleneck Right Now
-              </label>
-              <textarea
-                rows={4}
-                className="w-full bg-black/40 rounded-lg px-4 py-3 text-sm border outline-none resize-none"
-                style={{ borderColor: "rgba(255,255,255,0.12)" }}
-                placeholder="Share a quick snapshot of your leads, delivery and operations…"
-              />
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-[auto_minmax(0,1fr)] gap-4 items-center pt-2">
-              <button
-                type="submit"
-                className="px-8 py-3 rounded-full text-[11px] font-black uppercase tracking-[0.25em] flex items-center gap-3 bg-black text-white"
-                style={{ border: `1px solid ${LIME}` }}
-              >
-                Send My Blueprint
-                <ArrowRight className="w-4 h-4" style={{ color: LIME }} />
-              </button>
-              <p className="text-[11px] text-zinc-500 leading-relaxed">
-                We&apos;ll review your submission and reply within two business days with a tailored systems outline—no
-                spam, no fluffy sales deck.
-              </p>
-            </div>
-          </form>
+          <MultiStepLeadForm />
         </motion.div>
       </div>
     </section>
@@ -807,12 +876,13 @@ function Footer() {
           />
         </div>
         <div className="text-[10px] font-black uppercase tracking-[0.3em] text-zinc-700">
-          © 2026 · Advanced AI Architecture
+          © 2026 · 8Square Growth
         </div>
         <div className="flex items-center gap-6 text-[10px] font-bold uppercase tracking-widest text-zinc-600">
-          <a href="#services" className="hover:text-white transition-colors">Services</a>
-          <a href="#process" className="hover:text-white transition-colors">Process</a>
-          <a href="#pricing" className="hover:text-white transition-colors">Pricing</a>
+          <a href="#pain-ads" className="hover:text-white transition-colors">The Problem</a>
+          <a href="#pain-leads" className="hover:text-white transition-colors">Lead Growth</a>
+          <a href="#proof" className="hover:text-white transition-colors">Results</a>
+          <a href="#start" className="hover:text-white transition-colors">Get Audit</a>
         </div>
       </div>
     </footer>
@@ -829,9 +899,10 @@ export default function App() {
     >
       <Nav />
       <Hero />
-      <StrategyArchitectureSection />
-      <AutomatedLeadSystemsSection />
+      <PainPointAdsSection />
+      <PainPointLeadsSection />
       <ProofAndTestimonialsSection />
+      <TrustBar />
       <LeadFormSection />
       <Footer />
     </div>
